@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "site.liangbai.bettertitle.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mixins.bettertitle.refmap.json",
+  "client": [
+    "MixinMinecraft"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}
