@@ -12,7 +12,7 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import site.liangbai.bettertitle.common.network.NetworkSyncTitle;
+import site.liangbai.bettertitle.common.network.NetworkBetterTitle;
 import site.liangbai.bettertitle.config.Config;
 import site.liangbai.bettertitle.util.Utils;
 
@@ -45,11 +45,11 @@ public final class BetterTitle {
     }
 
     private void setup(FMLCommonSetupEvent event) {
-        event.enqueueWork(NetworkSyncTitle::init);
+        event.enqueueWork(NetworkBetterTitle::init);
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        LOGGER.info("Pre loading title successful. Author: Liangbai");
+        LOGGER.info("Pre loading title...");
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 

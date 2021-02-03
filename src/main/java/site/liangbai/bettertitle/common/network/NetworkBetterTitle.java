@@ -3,11 +3,12 @@ package site.liangbai.bettertitle.common.network;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import site.liangbai.bettertitle.BetterTitle;
 import site.liangbai.bettertitle.common.network.packet.PacketRequestChangeTitle;
 
-public final class NetworkSyncTitle {
+public final class NetworkBetterTitle {
     public static SimpleChannel INSTANCE;
-    private static final String VERSION = "1.0-SNAPSHOT";
+    private static final String VERSION = "1.0";
     private static int ID = 0;
 
     public static int nextID() {
@@ -16,7 +17,7 @@ public final class NetworkSyncTitle {
 
     public static void init() {
         INSTANCE = NetworkRegistry.newSimpleChannel(
-                new ResourceLocation("synctitle", "synctitle_networking"),
+                new ResourceLocation(BetterTitle.MOD_ID, BetterTitle.MOD_ID + "_networking"),
                 () -> VERSION,
                 (version) -> version.equals(VERSION),
                 (version) -> version.equals(VERSION)
