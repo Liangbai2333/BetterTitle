@@ -1,4 +1,4 @@
-package site.liangbai.bettertitle.client.eventhandlers;
+package site.liangbai.bettertitle.client.eventhandler;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import site.liangbai.bettertitle.BetterTitle;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
-public final class ClientEvents {
+public final class EventHandlerClient {
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         Minecraft.getInstance().setDefaultMinecraftTitle();

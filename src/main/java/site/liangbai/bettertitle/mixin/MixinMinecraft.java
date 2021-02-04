@@ -1,4 +1,4 @@
-package site.liangbai.bettertitle.mixins;
+package site.liangbai.bettertitle.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import site.liangbai.bettertitle.BetterTitle;
 import site.liangbai.bettertitle.config.Config;
+import site.liangbai.bettertitle.util.TitleUtil;
 
 import java.util.Date;
 
@@ -45,7 +46,7 @@ public abstract class MixinMinecraft {
         }
     }
 
-    public String applyTitle(String title) {
+    private String applyTitle(String title) {
         if (title == null || title.isEmpty()) return null;
 
         String gameType;
@@ -66,6 +67,9 @@ public abstract class MixinMinecraft {
                 .replace("%forge_version%", ForgeVersion.getVersion())
                 .replace("%time%", Config.getDateFormat().format(new Date()))
                 .replace("%play_type%", gameType)
-                .replace("%start_time%", Config.getStartTime());
+                .replace("%start_time%", Config.getStartTime())
+                .replace("%hitokoto%", TitleUtil.getHitokotoSentence())
+                .replace("%hitokoto_from%", TitleUtil.getHitokotoFrom())
+                .replace("%hitokoto_type%", TitleUtil.getHitokotoType());
     }
 }

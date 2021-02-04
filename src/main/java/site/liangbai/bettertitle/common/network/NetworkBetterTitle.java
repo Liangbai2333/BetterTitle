@@ -4,6 +4,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import site.liangbai.bettertitle.BetterTitle;
+import site.liangbai.bettertitle.common.network.packet.PacketReloadHitokoto;
 import site.liangbai.bettertitle.common.network.packet.PacketRequestChangeTitle;
 
 public final class NetworkBetterTitle {
@@ -33,6 +34,14 @@ public final class NetworkBetterTitle {
                 PacketRequestChangeTitle::toBytes,
                 PacketRequestChangeTitle::new,
                 PacketRequestChangeTitle::handle
+        );
+
+        INSTANCE.registerMessage(
+                nextID(),
+                PacketReloadHitokoto.class,
+                PacketReloadHitokoto::toBytes,
+                PacketReloadHitokoto::new,
+                PacketReloadHitokoto::handle
         );
     }
 }

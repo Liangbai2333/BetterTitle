@@ -1,0 +1,18 @@
+{
+  "openSyncFromServer": false,
+
+  "fixedTitle": {
+    "open": true,
+    "title": "Minecraft* %mc_version% |『%hitokoto%』 —— 「%hitokoto_from%」[%hitokoto_type%]"
+  },
+
+  "randomTitle": {
+    "open": false,
+    "titles": [
+      "Minecraft* %mc_version% [Forge %forge_version%] 载入MOD数量: %mod_count% 当前时间: %time% 游戏模式: %play_type%",
+      "Minecraft* %mc_version% [Forge %forge_version%] 载入MOD数量: %mod_count% 启动时间: %start_time% 游戏模式: %play_type%"
+    ]
+  },
+
+  "dateFormat": "yyyy年MM月dd日 HH:mm:ss"
+}

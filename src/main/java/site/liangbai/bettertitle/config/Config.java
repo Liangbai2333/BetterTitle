@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Random;
 
 public final class Config {
+    private boolean openSyncFromServer;
+
     private FixedTitle fixedTitle;
     
     private RandomTitle randomTitle;
@@ -16,6 +18,10 @@ public final class Config {
     private static SimpleDateFormat simpleDateFormat;
 
     private static String startTime;
+
+    public boolean isOpenSyncFromServer() {
+        return openSyncFromServer;
+    }
 
     public static String getStartTime() {
         return startTime;

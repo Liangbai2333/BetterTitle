@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "site.liangbai.bettertitle.mixins",
+  "package": "site.liangbai.bettertitle.mixin",
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.bettertitle.refmap.json",
   "client": [

@@ -6,10 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import site.liangbai.bettertitle.common.network.NetworkBetterTitle;
@@ -22,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.List;
 
 @Mod(BetterTitle.MOD_ID)
 public final class BetterTitle {
@@ -29,66 +31,67 @@ public final class BetterTitle {
 
     private static final String LINE_STRING = "\n";
 
+    private static final Logger LOGGER = LogManager.getLogger();
+
     public static String title;
 
     public static String serverTitle;
 
     public static Config config;
 
-    private static final Logger LOGGER = LogManager.getLogger();
-
     public BetterTitle() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void setup(FMLCommonSetupEvent event) {
+        if (FMLLoader.getDist().isClient()) {
+            LOGGER.info("[BetterTitle] Pre loading title...");
+
+            tryToLoadDefaultConfigJsonFromJson();
+
+            if (config != null && config.isOpenSyncFromServer()) {
+                event.enqueueWork(this::initNetwork);
+            }
+
+            LOGGER.info("[BetterTitle] Loading title successful. Author: Liangbai.");
+
+            return;
+        }
+
         event.enqueueWork(NetworkBetterTitle::init);
     }
 
-    private void clientSetup(final FMLClientSetupEvent event) {
-        LOGGER.info("Pre loading title...");
+    private void initNetwork() {
+        LOGGER.info("[BetterTitle] Register network for sync title from server.");
 
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        NetworkBetterTitle.init();
+    }
+
+    private void tryToLoadDefaultConfigJsonFromJson() {
+        Gson gson = new GsonBuilder().create();
 
         Path path = Paths.get("title.json");
 
-        if (!Files.exists(path)) {
-            try {
-                Files.createFile(path);
-
-                String json = "{\n" +
-                        "  \"fixedTitle\": {\n" +
-                        "    \"open\": true,\n" +
-                        "    \"title\": \"Minecraft* - %mc_version% - Forge - %forge_version% - modCount: %mod_count% - time: %time% - %play_type% startTime: %start_time%\"\n" +
-                        "  },\n" +
-                        "\n" +
-                        "  \"randomTitle\": {\n" +
-                        "    \"open\": false,\n" +
-                        "    \"titles\": [\n" +
-                        "      \"Minecraft* - %mc_version% - Forge - %forge_version% - modCount: %mod_count% - time: %time% - %play_type% startTime: %start_time%\"\n" +
-                        "    ]\n" +
-                        "  },\n" +
-                        "\n" +
-                        "  \"dateFormat\": \"yyyy年MM月dd日 HH:mm:ss\"\n" +
-                        "}";
-
-                Files.write(path, json.getBytes(StandardCharsets.UTF_8));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            tryToCopyDefaultTitleJsonFile(path);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         try {
-            String json = String.join(LINE_STRING, Files.readAllLines(path));
+            String json = linkStringForList(Files.readAllLines(path));
 
             config = gson.fromJson(json, Config.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+        tryToCompileTitle();
+    }
+
+    private void tryToCompileTitle() {
         if (config != null) {
             if (config.getFixedTitle().isOpen()) {
                 title = config.getFixedTitle().getTitle();
@@ -100,8 +103,28 @@ public final class BetterTitle {
         Config.setStartTime(Config.getDateFormat().format(new Date()));
 
         Minecraft.getInstance().setDefaultMinecraftTitle();
+    }
 
-        LOGGER.info("Loading title successful. Author: Liangbai");
+    private void tryToCopyDefaultTitleJsonFile(Path copyTo) throws IOException {
+        if (!Files.exists(copyTo)) {
+            Files.createFile(copyTo);
+
+            ModFile modFile = FMLLoader.getLoadingModList().getModFileById(MOD_ID).getFile();
+
+            Path resourcePath = modFile.getLocator().findPath(modFile, "title.json");
+
+            if (!Files.exists(resourcePath)) {
+                throw new IllegalStateException("can not found the default json file: " + "title.json" + ".");
+            }
+
+            String titleJson = linkStringForList(Files.readAllLines(resourcePath));
+
+            Files.write(copyTo, titleJson.getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+    private String linkStringForList(List<String> stringList) {
+        return String.join(LINE_STRING, stringList);
     }
 
     @SubscribeEvent
