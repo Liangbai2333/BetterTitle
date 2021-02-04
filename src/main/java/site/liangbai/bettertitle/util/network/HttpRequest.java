@@ -9,18 +9,13 @@ import java.nio.charset.Charset;
 
 public final class HttpRequest {
     private final URLConnection urlConnection;
-    private String charset = "utf-8";
 
     public HttpRequest(String url) throws IOException {
         this.urlConnection = (new URL(url)).openConnection();
     }
 
-    public HttpRequest(URL url) throws IOException {
-        this.urlConnection = url.openConnection();
-    }
-
-    public HttpRequest(URLConnection urlConnection) {
-        this.urlConnection = urlConnection;
+    public URLConnection getUrlConnection() {
+        return urlConnection;
     }
 
     public void putRequestProperty(String key, String value) {
@@ -28,11 +23,7 @@ public final class HttpRequest {
     }
 
     public String getCharset() {
-        return this.charset;
-    }
-
-    public void setCharset(String charset) {
-        this.charset = charset;
+        return "utf-8";
     }
 
     public String sendRequestAndReturn() throws IOException {

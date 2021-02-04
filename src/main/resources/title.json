@@ -14,5 +14,13 @@
     ]
   },
 
+  "customIcon": {
+    "open": false,
+    "icon": {
+      "icon16x": "icon16.png",
+      "icon32x": "icon32.png"
+    }
+  },
+
   "dateFormat": "yyyy年MM月dd日 HH:mm:ss"
 }

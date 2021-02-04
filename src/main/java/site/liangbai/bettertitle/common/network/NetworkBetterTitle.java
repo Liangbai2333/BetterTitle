@@ -9,7 +9,7 @@ import site.liangbai.bettertitle.common.network.packet.PacketRequestChangeTitle;
 
 public final class NetworkBetterTitle {
     public static SimpleChannel INSTANCE;
-    private static final String VERSION = "1.0";
+    private static final String VERSION = "1.3";
     private static int ID = 0;
 
     public static int nextID() {

@@ -45,15 +45,23 @@ public final class BetterTitle {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
+    public static void initConfig() {
+        LOGGER.info("[BetterTitle] Loading title.json file...");
+
+        tryToLoadDefaultConfigJsonFromJson();
+
+        LOGGER.info("[BetterTitle] Succeed in loading title.json file.");
+    }
+
     private void setup(FMLCommonSetupEvent event) {
         if (FMLLoader.getDist().isClient()) {
             LOGGER.info("[BetterTitle] Pre loading title...");
 
-            tryToLoadDefaultConfigJsonFromJson();
-
             if (config != null && config.isOpenSyncFromServer()) {
                 event.enqueueWork(this::initNetwork);
             }
+
+            tryToCompileTitle();
 
             LOGGER.info("[BetterTitle] Loading title successful. Author: Liangbai.");
 
@@ -69,7 +77,7 @@ public final class BetterTitle {
         NetworkBetterTitle.init();
     }
 
-    private void tryToLoadDefaultConfigJsonFromJson() {
+    private static void tryToLoadDefaultConfigJsonFromJson() {
         Gson gson = new GsonBuilder().create();
 
         Path path = Paths.get("title.json");
@@ -87,11 +95,9 @@ public final class BetterTitle {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        tryToCompileTitle();
     }
 
-    private void tryToCompileTitle() {
+    private static void tryToCompileTitle() {
         if (config != null) {
             if (config.getFixedTitle().isOpen()) {
                 title = config.getFixedTitle().getTitle();
@@ -105,7 +111,7 @@ public final class BetterTitle {
         Minecraft.getInstance().setDefaultMinecraftTitle();
     }
 
-    private void tryToCopyDefaultTitleJsonFile(Path copyTo) throws IOException {
+    private static void tryToCopyDefaultTitleJsonFile(Path copyTo) throws IOException {
         if (!Files.exists(copyTo)) {
             Files.createFile(copyTo);
 
@@ -123,7 +129,7 @@ public final class BetterTitle {
         }
     }
 
-    private String linkStringForList(List<String> stringList) {
+    private static String linkStringForList(List<String> stringList) {
         return String.join(LINE_STRING, stringList);
     }
 
