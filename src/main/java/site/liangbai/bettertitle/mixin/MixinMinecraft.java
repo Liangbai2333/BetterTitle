@@ -57,6 +57,8 @@ public abstract class MixinMinecraft {
     private void redirect_$init$(MainWindow mainWindow, InputStream iconStream16X, InputStream iconStream32X) {
         BetterTitle.initConfig();
 
+        BetterTitle.syncStartTime();
+
         IconUtil.setDefaultIcon(mainWindow, iconStream16X, iconStream32X);
     }
 

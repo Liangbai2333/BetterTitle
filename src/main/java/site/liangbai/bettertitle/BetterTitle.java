@@ -16,6 +16,7 @@ import org.apache.logging.log4j.Logger;
 import site.liangbai.bettertitle.common.network.NetworkBetterTitle;
 import site.liangbai.bettertitle.config.Config;
 import site.liangbai.bettertitle.util.Utils;
+import site.liangbai.bettertitle.util.task.UpdateTitleTask;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -24,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 @Mod(BetterTitle.MOD_ID)
 public final class BetterTitle {
@@ -62,6 +64,8 @@ public final class BetterTitle {
             }
 
             tryToCompileTitle();
+
+            startUpdateTitleTask();
 
             LOGGER.info("[BetterTitle] Loading title successful. Author: Liangbai.");
 
@@ -106,8 +110,6 @@ public final class BetterTitle {
             }
         }
 
-        Config.setStartTime(Config.getDateFormat().format(new Date()));
-
         Minecraft.getInstance().setDefaultMinecraftTitle();
     }
 
@@ -131,6 +133,20 @@ public final class BetterTitle {
 
     private static String linkStringForList(List<String> stringList) {
         return String.join(LINE_STRING, stringList);
+    }
+
+    private static void startUpdateTitleTask() {
+        Timer timer = new Timer();
+
+        Minecraft minecraft = Minecraft.getInstance();
+
+        timer.scheduleAtFixedRate(new UpdateTitleTask(minecraft::setDefaultMinecraftTitle), 500, 500);
+    }
+
+    public static void syncStartTime() {
+        if (config != null) {
+            Config.setStartTime(Config.getDateFormat().format(new Date()));
+        }
     }
 
     @SubscribeEvent
