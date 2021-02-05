@@ -40,7 +40,6 @@ public final class PacketRequestChangeTitle {
         if (ctx.get().getDirection().getReceptionSide().isServer()) return;
 
         ctx.get().enqueueWork(() -> {
-            if (title == null || title.isEmpty()) return;
 
             BetterTitle.serverTitle = title;
 

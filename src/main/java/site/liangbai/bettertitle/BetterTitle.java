@@ -2,6 +2,7 @@ package site.liangbai.bettertitle;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -60,7 +61,7 @@ public final class BetterTitle {
             LOGGER.info("[BetterTitle] Pre loading title...");
 
             if (config != null && config.isOpenSyncFromServer()) {
-                event.enqueueWork(this::initNetwork);
+                initNetwork();
             }
 
             tryToCompileTitle();
@@ -72,13 +73,16 @@ public final class BetterTitle {
             return;
         }
 
-        event.enqueueWork(NetworkBetterTitle::init);
+
+        initNetwork();
     }
 
     private void initNetwork() {
-        LOGGER.info("[BetterTitle] Register network for sync title from server.");
+        LOGGER.info("[BetterTitle] Register network for sync title.");
 
-        NetworkBetterTitle.init();
+        Minecraft minecraft = Minecraft.getInstance();
+
+        minecraft.enqueue(NetworkBetterTitle::init);
     }
 
     private static void tryToLoadDefaultConfigJsonFromJson() {

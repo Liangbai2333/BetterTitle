@@ -27,6 +27,7 @@ public final class PacketReloadHitokoto {
 
     public void toBytes(PacketBuffer buf) {
         if (type == null || type.isEmpty()) {
+
             buf.writeString("");
 
             return;

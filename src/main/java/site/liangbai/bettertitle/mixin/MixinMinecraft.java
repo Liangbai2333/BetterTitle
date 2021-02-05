@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.util.Session;
 import net.minecraft.util.SharedConstants;
 import net.minecraftforge.fml.loading.FMLLoader;
 import net.minecraftforge.versions.forge.ForgeVersion;
@@ -32,6 +33,8 @@ public abstract class MixinMinecraft {
 
     @Shadow
     public abstract boolean isConnectedToRealms();
+
+    @Shadow public abstract Session getSession();
 
     @Inject(
             method = "getWindowTitle",
@@ -86,6 +89,7 @@ public abstract class MixinMinecraft {
                 .replace("%start_time%", Config.getStartTime())
                 .replace("%hitokoto%", TitleUtil.getHitokotoSentence())
                 .replace("%hitokoto_from%", TitleUtil.getHitokotoFrom())
-                .replace("%hitokoto_type%", TitleUtil.getHitokotoType());
+                .replace("%hitokoto_type%", TitleUtil.getHitokotoType())
+                .replace("%player_name%", getSession().getUsername());
     }
 }
