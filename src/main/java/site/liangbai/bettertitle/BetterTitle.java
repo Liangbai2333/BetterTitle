@@ -2,7 +2,6 @@ package site.liangbai.bettertitle;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -80,9 +79,7 @@ public final class BetterTitle {
     private void initNetwork() {
         LOGGER.info("[BetterTitle] Register network for sync title.");
 
-        Minecraft minecraft = Minecraft.getInstance();
-
-        minecraft.enqueue(NetworkBetterTitle::init);
+        NetworkBetterTitle.init();
     }
 
     private static void tryToLoadDefaultConfigJsonFromJson() {
