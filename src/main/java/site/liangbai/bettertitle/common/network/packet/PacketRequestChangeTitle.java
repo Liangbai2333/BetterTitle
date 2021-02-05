@@ -11,7 +11,15 @@ public final class PacketRequestChangeTitle {
     private final String title;
 
     public PacketRequestChangeTitle(PacketBuffer buffer) {
-        title = buffer.readString(Short.MAX_VALUE);
+        String title = buffer.readString(Short.MAX_VALUE);
+
+        if (title.isEmpty()) {
+            this.title = null;
+
+            return;
+        }
+
+        this.title = title;
     }
 
     public PacketRequestChangeTitle(String title) {
@@ -19,7 +27,13 @@ public final class PacketRequestChangeTitle {
     }
 
     public void toBytes(PacketBuffer buf) {
-        buf.writeString(this.title);
+        if (title == null || title.isEmpty()) {
+            buf.writeString("");
+
+            return;
+        }
+
+        buf.writeString(title);
     }
 
     public void handle(Supplier<NetworkEvent.Context> ctx) {

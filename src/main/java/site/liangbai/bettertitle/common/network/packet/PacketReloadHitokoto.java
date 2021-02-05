@@ -10,13 +10,15 @@ public final class PacketReloadHitokoto {
     private final String type;
 
     public PacketReloadHitokoto(PacketBuffer buffer) {
-        if (buffer.readString(Short.MAX_VALUE).isEmpty()) {
-            type = null;
+        String type = buffer.readString(Short.MAX_VALUE);
+
+        if (type.isEmpty()) {
+            this.type = null;
 
             return;
         }
 
-        type = buffer.readString(Short.MAX_VALUE);
+        this.type = type;
     }
 
     public PacketReloadHitokoto(String type) {
