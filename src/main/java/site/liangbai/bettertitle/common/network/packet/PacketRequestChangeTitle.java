@@ -1,9 +1,9 @@
 package site.liangbai.bettertitle.common.network.packet;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import site.liangbai.bettertitle.BetterTitle;
+import site.liangbai.bettertitle.util.TitleUtil;
 
 import java.util.function.Supplier;
 
@@ -30,7 +30,7 @@ public final class PacketRequestChangeTitle {
 
             BetterTitle.serverTitle = title;
 
-            Minecraft.getInstance().setDefaultMinecraftTitle();
+            TitleUtil.updateTitle();
         });
 
         ctx.get().setPacketHandled(true);

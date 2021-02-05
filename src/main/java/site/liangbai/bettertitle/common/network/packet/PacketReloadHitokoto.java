@@ -1,6 +1,5 @@
 package site.liangbai.bettertitle.common.network.packet;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.network.NetworkEvent;
 import site.liangbai.bettertitle.util.TitleUtil;
@@ -40,7 +39,7 @@ public final class PacketReloadHitokoto {
         ctx.get().enqueueWork(() -> {
             TitleUtil.reloadHitokoto(type);
 
-            Minecraft.getInstance().setDefaultMinecraftTitle();
+            TitleUtil.updateTitle();
         });
 
         ctx.get().setPacketHandled(true);

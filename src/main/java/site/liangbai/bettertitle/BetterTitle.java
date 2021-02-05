@@ -2,7 +2,6 @@ package site.liangbai.bettertitle;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -15,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import site.liangbai.bettertitle.common.network.NetworkBetterTitle;
 import site.liangbai.bettertitle.config.Config;
+import site.liangbai.bettertitle.util.TitleUtil;
 import site.liangbai.bettertitle.util.Utils;
 import site.liangbai.bettertitle.util.task.UpdateTitleTask;
 
@@ -110,7 +110,7 @@ public final class BetterTitle {
             }
         }
 
-        Minecraft.getInstance().setDefaultMinecraftTitle();
+        TitleUtil.updateTitle();
     }
 
     private static void tryToCopyDefaultTitleJsonFile(Path copyTo) throws IOException {
@@ -138,9 +138,7 @@ public final class BetterTitle {
     private static void startUpdateTitleTask() {
         Timer timer = new Timer();
 
-        Minecraft minecraft = Minecraft.getInstance();
-
-        timer.scheduleAtFixedRate(new UpdateTitleTask(minecraft::setDefaultMinecraftTitle), 500, 500);
+        timer.scheduleAtFixedRate(new UpdateTitleTask(TitleUtil::updateTitle), 500, 500);
     }
 
     public static void syncStartTime() {

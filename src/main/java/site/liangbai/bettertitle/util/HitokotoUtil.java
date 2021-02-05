@@ -23,8 +23,8 @@ public final class HitokotoUtil {
         registerSentenceType("其他", "g");
         registerSentenceType("影视", "h");
         registerSentenceType("诗词", "i");
-        registerSentenceType("网易云", "j");
         registerSentenceType("网抑云", "j");
+        registerSentenceType("网易云", "j");
         registerSentenceType("哲学", "k");
         registerSentenceType("抖机灵", "l");
     }

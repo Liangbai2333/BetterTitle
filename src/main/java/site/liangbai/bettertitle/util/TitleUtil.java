@@ -1,5 +1,6 @@
 package site.liangbai.bettertitle.util;
 
+import net.minecraft.client.Minecraft;
 import site.liangbai.bettertitle.hitokoto.Hitokoto;
 
 import java.io.IOException;
@@ -41,5 +42,11 @@ public final class TitleUtil {
 
     public static String getHitokotoType() {
         return getHitokoto().getType();
+    }
+
+    public static void updateTitle() {
+        Minecraft minecraft = Minecraft.getInstance();
+
+        minecraft.enqueue(minecraft::setDefaultMinecraftTitle);
     }
 }
